@@ -1,3 +1,12 @@
 from django.contrib import admin
+from api import models
 
-# Register your models here.
+
+@admin.register(models.Event)
+class EventAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.Agent)
+class AgentAdmin(admin.ModelAdmin):
+    pass
