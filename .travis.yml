@@ -1,15 +1,23 @@
 language: python
 python:
-  - '3.7'
-
-install:
-  - pip install -r requirements.txt
+  - '3.6'
 
 stages:
   - name: test
+  - name: deploy
 
 jobs:
   include:
     - stage: test
       name: Unit Tests
-      script: python manager.py test
+      script: python manage.py test
+    - stage: deploy
+      name: Heroku deploy
+      script: /bin/true
+      deploy:
+        provider: heroku
+        api_key:
+          secure: VKEIzlsYzyxGYSfuzUL1gf5HXZ8qOiaJJNs0EoJc2AdTNc3LXQuWbOyNKUQT/wnjslZhakgJiWx8nXeTOU2LPX03PtNlVm9YAjsL8vDsjo1qm72fRS0opmIPHPv0uSX4TI06iqxI9W8ta7o/tEEZFx53zGx5X97W6tm92NML+Css5aFi0JPXv0WkKGvrz/UyvTwWwfAeyD290TDa1m/S5MIzoN8soOJp0gTK/iQOJCrLPRt+kBlYd7MlCnqC3yNEVTE6NIZ7zklTSyvwockgFkly2nxSEvdI4pyFuK/IyBpyovjnGYXoS9PGOtLBHETCvkEFAXR/njIJUsYDIWBj2pibmngafzZgwRPX+cHMZ7aKlY7G8Qf9jvyfj91SpiO9m9A6BIdveMiqDtMDZTp6CkHAPezcsWMqFluwFW/h65VsCnp2bVVVzcyuQ0eUuStM5eITbzTeW+F7dOaPnOALQVWWe9gwvEAMe31r2cnLZ3Fjyo91s0f+VVuDs0pUvm/phv4V4tXyXiOfTXDrEND6XjIoR9t/5+yGuJ5mIQ1Io1oz4IMN+6BBQbzijLdg47063zj8Po+cfj5Gxdr7UXMXlF5l6rWAdYz8YuLIQXzrU6w0dk2T3fuLU9nLvWGDTVr9NRJ6M16aZcxYTtDj62jp1tN0eM6AQhXxoaB5L9sB9YU=
+        app: central-logs
+        on: master
+        run: 'python manage.py migrate'
