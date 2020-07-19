@@ -12,4 +12,4 @@ jobs:
   include:
     - stage: test
       name: Unit Tests
-      script: python manager.py test
+      script: python manage.py test
