@@ -49,6 +49,7 @@ router.register(r'groups', GroupViewSet)
 
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
     path('api/auth/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 

@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
-    'drf_yasg'
+    'drf_yasg',
+    'django_filters'
 ]
 
 MIDDLEWARE = [
@@ -134,7 +135,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 SWAGGER_SETTINGS = {
@@ -146,7 +148,10 @@ SWAGGER_SETTINGS = {
         },
 
     },
-    'USE_SESSION_AUTH': False
+    'USE_SESSION_AUTH': False,
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 }
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
