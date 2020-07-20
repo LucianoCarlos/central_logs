@@ -1,8 +1,8 @@
-from django.core.validators import MinLengthValidator, EmailValidator, validate_ipv4_address
+from django.core.validators import MinLengthValidator, EmailValidator
 from django.db import models
 import datetime
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 LEVEL_CHOICES = [
     ('critical', 'critical'),
@@ -13,21 +13,10 @@ LEVEL_CHOICES = [
 ]
 
 
-class Group(models.Model):
-    name = models.CharField(max_length=20, blank=True)
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['name']
-
-
 class Agent(models.Model):
     name = models.CharField(max_length=50)
     user = models.ForeignKey(User, on_delete=models.PROTECT, null=True)
-    address = models.GenericIPAddressField(
-        validators=[validate_ipv4_address], null=True)
+    address = models.URLField(null=True)
     status = models.BooleanField(default=False)
     env = models.CharField(max_length=20)
     version = models.CharField(max_length=5)
@@ -41,8 +30,9 @@ class Agent(models.Model):
 
 class Event(models.Model):
     level = models.CharField(max_length=20, choices=LEVEL_CHOICES)
-    data = models.TextField(max_length=500)
-    agent = models.OneToOneField(Agent, on_delete=models.PROTECT)
+    title = models.CharField(max_length=100, null=True)
+    description = models.TextField(max_length=500)
+    agent = models.ForeignKey(Agent, on_delete=models.PROTECT)
     arquivado = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
 
