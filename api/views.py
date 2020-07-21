@@ -6,9 +6,8 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 
 
 from .filters import CustomSearchFilter
-from .models import Event, Agent, User, Group
-from .serializers import EventSerializer, AgentSerializer, UserSerializer, GroupSerializer
-from .permissions import IsLoggedInUserOrAdmin
+from .models import Event, Agent
+from .serializers import EventSerializer, AgentSerializer
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -35,35 +34,3 @@ class AgentViewSet(viewsets.ModelViewSet):
     serializer_class = AgentSerializer
     http_method_names = [u'get', u'post', u'put', u'delete']
     permission_classes = [IsAuthenticated]
-
-
-class UserViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows users to be viewed or edited.
-    """
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-    http_method_names = [u'get', u'post', u'put', u'delete']
-    permission_classes = [IsAuthenticated]
-
-    def get_permissions(self):
-        permission_classes = []
-        if self.action == 'create':
-            permission_classes = [IsAdminUser]
-        elif self.action == 'list':
-            permission_classes = [IsAdminUser]
-        elif self.action == 'retrieve' or self.action == 'update' or self.action == 'partial_update':
-            permission_classes = [IsLoggedInUserOrAdmin]
-        elif self.action == 'destroy':
-            permission_classes = [IsLoggedInUserOrAdmin]
-        return [permission() for permission in permission_classes]
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-    permission_classes = [IsAuthenticated]
-    http_method_names = [u'get', u'post', u'put', u'delete']
